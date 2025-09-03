@@ -197,6 +197,7 @@ export function Board() {
 
   return (
     <>
+      <h2 className="text-xl font-bold mb-4">Tic Tac Toe</h2>
       <Alert winner={winner} tie={tie} symbol={startingPlayerSymbol} />
 
       <GameTypeToggle />
