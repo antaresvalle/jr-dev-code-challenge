@@ -148,19 +148,20 @@ function GameTypeToggle() {
   }, [gameType]);
 
   return (
-    <div>
-      <label htmlFor="">PVC</label>
-      <label>
+    <div className="flex items-center mb-4">
+      <label className="text-xl mr-4">Enable PVP?</label>
+      <label className="relative flex items-center cursor-pointer">
         <input
           type="checkbox"
+          className="w-full h-full peer appearance-none rounded-md"
           checked={gameType === "PVP"}
           onChange={() => {
             const nextType = gameType === "PVC" ? "PVP" : "PVC";
             dispatch({ type: "SET_GAME_TYPE", data: nextType });
           }}
         />
+        <span className="w-16 h-6 flex items-center flex-shrink-0 ml-4 p-1 bg-gray-300 rounded-full duration-300 ease-in-out peer-checked:bg-green-400 after:w-5 after:h-5 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-6 group-hover:after:translate-x-1"></span>
       </label>
-      <label htmlFor="">PVP</label>
     </div>
   );
 }
