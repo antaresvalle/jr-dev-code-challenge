@@ -11,18 +11,24 @@ interface AlertProps {
 function Alert({ tie, winner }: AlertProps) {
   if (winner) {
     return (
-      <div className="flex gap-x-4">
-        <strong>Winner</strong> {winner}
-        <button className="">New Game</button>
+      <div className="flex gap-x-4 justify-between bg-green-950 rounded-md p-4 mb-4">
+        <div className="text-white">
+          <strong className="font-normal py-1">Winner:</strong> {winner}
+        </div>
+        <button className="cursor-pointer text-green-300 hover:text-green-200">
+          New Game
+        </button>
       </div>
     );
   }
 
   if (tie) {
     return (
-      <div className="flex gap-x-4">
-        <strong style={{ padding: "1px 0" }}>Tied game</strong>
-        <button className="">New Game</button>
+      <div className="flex gap-x-4 justify-between bg-green-950 rounded-md p-4 mb-4">
+        <strong className="font-normal text-white">Tied game</strong>
+        <button className="cursor-pointer text-green-300 hover:text-green-200">
+          New Game
+        </button>
       </div>
     );
   }
