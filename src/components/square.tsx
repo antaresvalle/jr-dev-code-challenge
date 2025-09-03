@@ -16,7 +16,7 @@ export function Square({
   const {
     dispatch,
     state: {
-      data: { winningCells, gameType },
+      data: { winningCells, gameType, winner, tie },
     },
   } = useContext(GameContext);
 
@@ -38,17 +38,19 @@ export function Square({
     <div
       className="square"
       onClick={() => {
-        dispatch({ type: "CELL_CLICK", data: { x: rowCount, y: cellCount } });
+        if (!value && !tie && !winner) {
+          dispatch({ type: "CELL_CLICK", data: { x: rowCount, y: cellCount } });
 
-        if (gameType === "PVC") {
-          // timeout here so it's not too aggressive to the user
-          setTimeout(() => {
-            dispatch({ type: "COMPUTER_PLAY", data: null });
-          }, 500);
+          if (gameType === "PVC") {
+            // timeout here so it's not too aggressive to the user
+            setTimeout(() => {
+              dispatch({ type: "COMPUTER_PLAY", data: null });
+            }, 500);
+          }
         }
       }}
       style={{
-        cursor: "pointer",
+        cursor: `${!value && !tie && !winner ? "pointer" : "default"}`,
         backgroundColor,
       }}
     >

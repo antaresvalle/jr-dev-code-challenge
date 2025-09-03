@@ -114,3 +114,14 @@ Acceptance criteria (features)
 - At least items (1)–(3) of the feature list are implemented and meet acceptance criteria.
 - The app runs without console errors and the UI is reasonably polished using Tailwind.
 - README updated (optional) with any notes, assumptions, or known limitations.
+
+## Notes
+
+**Bug:**
+
+- Sometimes the name of the winner's appears incorrect in PVC mode.
+
+**ToDos:**
+
+- Add empty check validation for players name on Settings page, with feedback for the user. Right now, empty values will use default names.
+- DRY the code by creating more components and enums to reduce repetition.
