@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { Row } from "./row";
 import { GameContext } from "../contexts/game";
 import { Cell } from "../interfaces/IBoard";
@@ -6,6 +6,7 @@ import { Cell } from "../interfaces/IBoard";
 interface AlertProps {
   tie: boolean;
   winner: Cell;
+  symbol: string;
 }
 
 function RenderResetButton(dispatch: (action: any) => void) {
@@ -21,13 +22,43 @@ function RenderResetButton(dispatch: (action: any) => void) {
   );
 }
 
-function Alert({ tie, winner }: AlertProps) {
-  const { dispatch } = useContext(GameContext);
+function Alert({ tie, winner, symbol }: AlertProps) {
+  const {
+    dispatch,
+    state: {
+      data: { gameType },
+    },
+  } = useContext(GameContext);
+
+  const [playerOneName, setPlayerOneName] = useState("");
+  const [playerTwoName, setPlayerTwoName] = useState("");
+  const [computerName, setComputerName] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedPlayerOne = localStorage.getItem("player1");
+      const savedPlayerTwo = localStorage.getItem("player2");
+      const savedComputer = localStorage.getItem("computer");
+      setPlayerOneName(savedPlayerOne || "Player 1");
+      setPlayerTwoName(savedPlayerTwo || "Player 2");
+      setComputerName(savedComputer || "Computer");
+    }
+  }, []);
+
   if (winner) {
+    let personalizedWinner = "";
+    if (gameType === "PVC") {
+      // TODO: name symbol in a more descriptive way
+      // BUG: incorrect name showing sometimes
+      personalizedWinner = winner === symbol ? computerName : playerTwoName;
+    } else {
+      personalizedWinner = winner === symbol ? playerOneName : playerTwoName;
+    }
     return (
       <div className="flex gap-x-4 justify-between bg-green-950 rounded-md p-4 mb-4">
         <div className="text-white">
-          <strong className="font-normal py-1">Winner:</strong> {winner}
+          <strong className="font-normal py-1">Winner:</strong>{" "}
+          {personalizedWinner}
         </div>
         {RenderResetButton(dispatch)}
       </div>
@@ -90,9 +121,15 @@ function GameTypeToggle() {
 export function Board() {
   const {
     state: {
-      data: { board, winner, tie },
+      data: { board, winner, tie, player },
     },
   } = useContext(GameContext);
+
+  const [startingPlayerSymbol, setStartingPlayerSymbol] = useState("");
+
+  useEffect(() => {
+    setStartingPlayerSymbol(player);
+  }, []);
 
   const rows: ReactElement[] = [];
 
@@ -102,7 +139,7 @@ export function Board() {
 
   return (
     <>
-      <Alert winner={winner} tie={tie} />
+      <Alert winner={winner} tie={tie} symbol={startingPlayerSymbol} />
 
       <GameTypeToggle />
 
