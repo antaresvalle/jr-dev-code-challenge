@@ -98,25 +98,21 @@ function Alert({ tie, winner, symbol }: AlertProps) {
       personalizedWinner = winner === symbol ? playerOneName : playerTwoName;
     }
     return (
-      <div>
-        <div className="flex gap-x-4 justify-between bg-green-950 rounded-md p-4 mb-4">
-          <div className="text-white">
-            <strong className="font-normal py-1">Winner:</strong>{" "}
-            {personalizedWinner}
-          </div>
-          {RenderResetButton(dispatch)}
+      <div className="flex gap-x-4 justify-between bg-green-950 rounded-md p-4 mb-4">
+        <div className="text-white">
+          <strong className="font-normal py-1">Winner:</strong>{" "}
+          {personalizedWinner}
         </div>
+        {RenderResetButton(dispatch)}
       </div>
     );
   }
 
   if (tie) {
     return (
-      <div>
-        <div className="flex gap-x-4 justify-between bg-green-950 rounded-md p-4 mb-4">
-          <strong className="font-normal text-white">Tied game</strong>
-          {RenderResetButton(dispatch)}
-        </div>
+      <div className="flex gap-x-4 justify-between bg-green-950 rounded-md p-4 mb-4">
+        <strong className="font-normal text-white">Tied game</strong>
+        {RenderResetButton(dispatch)}
       </div>
     );
   }
