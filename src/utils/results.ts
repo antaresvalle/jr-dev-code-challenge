@@ -29,3 +29,13 @@ export function savedResults(winner: string) {
 
   return updatedResults;
 }
+
+export function getResults() {
+  let parsedExistingResults = null;
+  if (typeof window !== "undefined") {
+    const existingResults = localStorage.getItem("results");
+    parsedExistingResults = existingResults && JSON.parse(existingResults);
+  }
+
+  return { results: parsedExistingResults };
+}
