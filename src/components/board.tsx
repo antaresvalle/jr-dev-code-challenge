@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useEffect } from "react";
 import { Row } from "./row";
 import { GameContext } from "../contexts/game";
 import { Cell } from "../interfaces/IBoard";
@@ -46,6 +46,47 @@ function Alert({ tie, winner }: AlertProps) {
   return null;
 }
 
+function GameTypeToggle() {
+  const {
+    dispatch,
+    state: {
+      data: { gameType },
+    },
+  } = useContext(GameContext);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("preferredGameMode");
+      if (saved === "PVP" || saved === "PVC") {
+        dispatch({ type: "SET_GAME_TYPE", data: saved });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("preferredGameMode", gameType);
+    }
+  }, [gameType]);
+
+  return (
+    <div>
+      <label htmlFor="">PVC</label>
+      <label>
+        <input
+          type="checkbox"
+          checked={gameType === "PVP"}
+          onChange={() => {
+            const nextType = gameType === "PVC" ? "PVP" : "PVC";
+            dispatch({ type: "SET_GAME_TYPE", data: nextType });
+          }}
+        />
+      </label>
+      <label htmlFor="">PVP</label>
+    </div>
+  );
+}
+
 export function Board() {
   const {
     state: {
@@ -62,6 +103,8 @@ export function Board() {
   return (
     <>
       <Alert winner={winner} tie={tie} />
+
+      <GameTypeToggle />
 
       <div className="grid grid-cols-3 grid-rows-3 text-center max-h-[calc(100vh-10rem)] min-h-[calc(100vh-10rem)]">
         {rows.map((r) => r)}
